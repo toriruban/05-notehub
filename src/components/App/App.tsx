@@ -19,6 +19,8 @@ const handleSearch = (searchText: string) => {
   setCurrentPage(1);
 };
 
+const [isModalOpen, setIsModalOpen] = useState(false);
+
 export default function App() {
   return (
     <div className={ css.app }>
