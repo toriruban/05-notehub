@@ -8,12 +8,12 @@ export interface FetchNotesResponse {
     notes: Note[],
     totalPages: number,
     page: number,
-    perPage: number
+    perPage: number,
 }
 
-export const fetchNotes = async (query: string,  page: number, perPage: number): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (search: string,  page: number, perPage: number): Promise<FetchNotesResponse> => {
    const response = await axios.get<FetchNotesResponse>(`${ BASE_URL }/notes`, {
-    params: { query, page, perPage},
+    params: { search, page, perPage},
     headers: { Authorization: `Bearer ${ API_TOKEN }` }
    })
 

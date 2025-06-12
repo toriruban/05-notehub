@@ -5,13 +5,14 @@ import css from '../NoteList/NoteList.module.css';
 export interface NoteListProps {
     page: number;
     setTotalPages: (n: number) => void;
+    search: string;
 }
 
-export default function NoteList({ page, setTotalPages }: NoteListProps) {
+export default function NoteList({ page, setTotalPages, search }: NoteListProps) {
     const perPage = 12; 
     const { data } = useQuery({
-        queryKey: ['notes', '', page],
-        queryFn: () => fetchNotes('', page, perPage),
+        queryKey: ['notes', search, page],
+        queryFn: () => fetchNotes(search, page, perPage),
     })
 
     if (!data || data.notes.length === 0) return null;
