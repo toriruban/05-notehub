@@ -1,4 +1,6 @@
-import { useQuery, useQueryClient, useMutation, Mutation } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { fetchNotes, deleteNote  } from '../../services/noteService';
 import css from '../NoteList/NoteList.module.css';
 
@@ -11,20 +13,32 @@ export interface NoteListProps {
 export default function NoteList({ page, setTotalPages, search }: NoteListProps) {
     const perPage = 12; 
     const queryClient = useQueryClient();
-
     const { data } = useQuery({
-        queryKey: ['notes', search, page],
+        queryKey: ['notes', search, page, perPage],
         queryFn: () => fetchNotes(search, page, perPage),
     });
 
+    useEffect(() => {
+        if (data) {
+          setTotalPages(data.totalPages);
+        }
+      }, [data]);
+      
     const deleteTask = useMutation({
         mutationFn: (noteId: number) => deleteNote(noteId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['notes'] });
         }
-    })
-    if (!data || data.notes.length === 0) return null;
+    });
 
+    useEffect(() => {
+        if (data && data.notes.length === 0 && search.trim() !== "") {
+          toast('No notes found for your search.', {
+            icon: '😕',
+          });
+        }
+    }, [data, search]);
+    if (!data) return null;
     return(
         <ul className={ css.list }>
 	       {data.notes.map(note => (
