@@ -12,8 +12,14 @@ export interface FetchNotesResponse {
 }
 
 export const fetchNotes = async (search: string,  page: number, perPage: number): Promise<FetchNotesResponse> => {
-   const response = await axios.get<FetchNotesResponse>(`${ BASE_URL }/notes`, {
-    params: { search, page, perPage},
+   const params: { page: number, perPage: number, search?: string } = {
+    page, perPage
+   };
+   if (search){
+    params.search = search
+   }
+    const response = await axios.get<FetchNotesResponse>(`${ BASE_URL }/notes`, {
+    params: params,
     headers: { Authorization: `Bearer ${ API_TOKEN }` }
    })
 

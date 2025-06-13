@@ -23,9 +23,6 @@ export default function NoteList({ page, setTotalPages, search }: NoteListProps)
             queryClient.invalidateQueries({ queryKey: ['notes'] });
         }
     })
-
-
-
     if (!data || data.notes.length === 0) return null;
 
     return(

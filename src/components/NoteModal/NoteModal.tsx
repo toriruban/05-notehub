@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import NoteForm from "../NoteForm/NoteForm";
 import css from '../NoteModal/NoteModal.module.css';
 interface NoteModalProps {
     onClose: () => void;

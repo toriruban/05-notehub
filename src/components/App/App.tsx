@@ -1,4 +1,3 @@
-import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
 import css from '../App/App.module.css';
@@ -6,22 +5,23 @@ import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
 import SearchBox from '../SearchBox/SearchBox';
 
-const[ currentPage, setCurrentPage ] = useState(1);
-const [ totalPage, setTotalPages ] = useState(1);
-const handlePageChange = (page: number) => {
-  setCurrentPage(page);
-};
-
-const [ search, setSearch ] = useState('');
-const [ debouncedSearch ] = useDebounce(search, 400);
-const handleSearch = (searchText: string) => {
-  setSearch(searchText);
-  setCurrentPage(1);
-};
-
-const [isModalOpen, setIsModalOpen] = useState(false);
-
 export default function App() {
+  const[ currentPage, setCurrentPage ] = useState(1);
+  const [ totalPage, setTotalPages ] = useState(1);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const [ search, setSearch ] = useState('');
+  const [ debouncedSearch ] = useDebounce(search, 400);
+  const handleSearch = (searchText: string) => {
+    setSearch(searchText);
+    setCurrentPage(1);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   return (
     <div className={ css.app }>
 	<header className={ css.toolbar }>
