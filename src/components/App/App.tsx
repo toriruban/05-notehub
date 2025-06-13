@@ -49,16 +49,16 @@ export default function App() {
       <Toaster position="top-center" />
       <header className={css.toolbar}>
         <SearchBox value={ search } onSearch={ handleSearch } />
-        <button onClick={() => setModalOpen(true)}>Create note +</button>
-      </header>
-      <NoteList notes={data?.notes || []} onDelete={ handleDelete } />
-      {data && data.totalPages > 1 && (
+        {data && data.totalPages > 1 && (
         <Pagination
           currentPage={page}
           totalPages={data.totalPages}
           onPageChange={ handlePageChange }
         />
       )}
+        <button className={css.button} onClick={() => setModalOpen(true)}>Create note +</button>
+      </header>
+      <NoteList notes={data?.notes || []} onDelete={ handleDelete } />
       {isModalOpen && (
         <NoteModal
           onClose={() => setModalOpen(false)}

@@ -7,7 +7,7 @@ export interface NoteListProps {
 }
 
 export default function NoteList({ notes, onDelete }: NoteListProps) {
-  if (notes.length === 0) return <div className={css.empty}>No notes found.</div>;
+  if (notes.length === 0) return null;
 
   return (
     <ul className={css.list}>
