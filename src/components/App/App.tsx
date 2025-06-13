@@ -74,12 +74,9 @@ export default function App() {
           Create note +
         </button>
       </header>
-      <NoteList notes={data?.notes || []} onDelete={handleDelete} />
+      <NoteList notes={data?.notes || []} />
       {isModalOpen && (
-        <NoteModal
-          onClose={() => setModalOpen(false)}
-          onCreate={handleCreate}
-        />
+        <NoteModal onClose={() => setModalOpen(false)} />       
       )}
     </div>
   );
