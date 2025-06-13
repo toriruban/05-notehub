@@ -1,49 +1,64 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { FormikHelpers, Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createNote } from '../../services/noteService';
 import css from './NoteForm.module.css';
+import { NoteTag } from '../../types/note';
+
+export interface FormValues {
+  title: string;
+  content: string;
+  tag: NoteTag;
+}
 
 const validationSchema = Yup.object({
   title: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Title is required'),
-  content: Yup.string()
-    .max(500, 'Maximum 500 symbols'),
+  content: Yup.string().max(500, 'Maximum 500 symbols'),
   tag: Yup.string()
     .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Choose the accurate one')
     .required('Tag is required'),
 });
 
-interface FormValues {
-  title: string;
-  content: string;
-  tag: 'Work' | 'Personal' | 'Meeting' | 'Shopping' | 'Todo' | '';
-}
-
 const initialValues: FormValues = {
   title: '',
   content: '',
-  tag: '',
+  tag: 'Todo',
 };
 
-interface NoteFormProps {
+export interface NoteFormProps {
   onClose: () => void;
-  onCreate: (values: FormValues) => void;
 }
 
-export default function NoteForm({ onClose, onCreate }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      onClose();
+    },
+  });
+
+  const handleSubmit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    mutation.mutate(values, {
+      onSuccess: () => {
+        actions.resetForm();
+      }
+    });
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values, actions) => {
-        onCreate(values);
-        actions.resetForm();
-      }}
+      onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
         <Form className={css.form}>
-          <div className={css.formGroup}>
+         <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
             <Field id="title" name="title" type="text" className={css.input} />
             <ErrorMessage name="title" component="span" className={css.error} />

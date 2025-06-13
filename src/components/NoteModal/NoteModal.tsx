@@ -1,33 +1,29 @@
 import { useEffect } from 'react';
+import { FormikHelpers } from 'formik';
 import { createPortal } from 'react-dom';
-import NoteForm from '../NoteForm/NoteForm';
+import NoteForm, { FormValues } from '../NoteForm/NoteForm';
 import css from './NoteModal.module.css';
 
-interface NoteModalProps {
+export interface NoteModalProps {
   onClose: () => void;
-  onCreate: (values: any) => void;
+  onCreate: (values: FormValues, actions: FormikHelpers<FormValues>) => void;
 }
 
 export default function NoteModal({ onClose, onCreate }: NoteModalProps) {
   useEffect(() => {
-    const handleKeydown = (event: KeyboardEvent) => {
-      if (event.code === 'Escape') {
-        onClose();
-      }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') onClose();
     };
     document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeydown);
-
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleKeydown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
+    if (e.target === e.currentTarget) onClose();
   };
 
   return createPortal(
