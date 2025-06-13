@@ -32,7 +32,7 @@ export default function NoteModal({ onClose }: NoteModalProps) {
             onClick={ handleBackdropClick }
         >
             <div className={ css.modal }>
-            {/* Компонент NoteForm */}
+            <NoteForm onClose={ onClose } /> 
             </div>
         </div>
 , document.body )
