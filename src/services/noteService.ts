@@ -1,6 +1,15 @@
 import axios from 'axios';
-import { Note, FetchNotesResponse, CreateNote } from '../types/note';
+import { Note, NoteTag } from '../types/note';
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
 
+export interface CreateNote {
+  title: string;
+  content?: string;
+  tag: NoteTag;
+}
 const BASE_URL = 'https://notehub-public.goit.study/api';
 const API_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
 

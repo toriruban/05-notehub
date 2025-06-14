@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { toast, Toaster } from 'react-hot-toast';
 import { fetchNotes, createNote, deleteNote } from '../../services/noteService';
-import { FetchNotesResponse } from '../../types/note';
+import { FetchNotesResponse } from '../../services/noteService';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
 import SearchBox from '../SearchBox/SearchBox';
