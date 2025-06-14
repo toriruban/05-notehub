@@ -10,6 +10,8 @@ import NoteModal from '../NoteModal/NoteModal';
 import css from '../App/App.module.css';
 import { FormValues } from '../NoteForm/NoteForm';
 import { useDebounce } from 'use-debounce';
+import { FormikHelpers } from 'formik';
+import { PropagateLoader } from 'react-spinners';
 
 export default function App() {
   const [search, setSearch] = useState('');
@@ -41,7 +43,7 @@ export default function App() {
     },
   });
 
-  const handleCreate = (values: FormValues, actions: any) => {
+  const handleCreate = (values: FormValues, actions: FormikHelpers<FormValues>) => {
     createMutation.mutate(values, {
       onSuccess: () => {
         actions.resetForm();
@@ -74,9 +76,16 @@ export default function App() {
           Create note +
         </button>
       </header>
-      <NoteList notes={data?.notes || []} />
+      {data?.notes && data.notes.length > 0 && (
+        <NoteList notes={data.notes} />
+      )}
+     {isFetching && (
+         <div className={css.loaderWrapper}>
+            <PropagateLoader color="blue" size={35} />
+         </div>
+      )}
       {isModalOpen && (
-        <NoteModal onClose={() => setModalOpen(false)} />       
+        <NoteModal onClose={() => setModalOpen(false)} />
       )}
     </div>
   );

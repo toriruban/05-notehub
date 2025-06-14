@@ -29,3 +29,10 @@
 .button:hover {
   background-color: #0b5ed7;
 }
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
